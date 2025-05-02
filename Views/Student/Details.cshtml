@@ -1,0 +1,119 @@
+﻿@using SMD.Models.ModelsDTO;
+@model StudentDetailsDTO 
+<div class="page render" id="studentDetails">
+    <div class="header">
+        <h2 class="page-title">
+            <i class="fa-solid fa-user"></i> Student Details
+        </h2>
+        <div class="actions">
+
+            <button data-page="addStudent" class="btn dash-btn green">
+                <a style="color:white;" asp-route-id="@Model.Id" asp-controller="Student" asp-action="Edit">
+                <i class="fa-solid fa-user-group"></i>
+                <span>Edit Student</span>
+                </a>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="student-info-cards" style="justify-content:center;">
+        <div class="student-card" >
+            <div class="card-header border-b">
+                <div class="icon-title">
+                    <i class="fa-solid fa-user"></i>
+                    Student Information
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row-info">
+                    <p class="key gray-bold">ID</p>
+                    <p class="value">@Model.Id</p>
+                </div>
+
+                <div class="row-info">
+                    <p class="key gray-bold">Name</p>
+                    <p class="value">@Model.FullName</p>
+                </div>
+
+                <div class="row-info">
+                    <span>
+                        <i class="fa-solid fa-building"></i>
+                        <p class="key gray-bold">Department</p>
+                    </span>
+                    <p class="value">@Model.Major</p>
+                </div>
+                <div class="row-info border-b" style="padding-bottom: 15px;">
+                    <span>
+                        <i class="fa-regular fa-calendar"></i>
+                        <p class="key gray-bold">Enrollment Year</p>
+                    </span>
+                    <p class="value">@Model.EnrollmentYear</p>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row-info">
+                    <span>
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <p class="key gray-bold">Cumulative GPA</p>
+                    </span>
+                    <p class="value bold">@Model.GPA</p>
+                </div>
+                <div class="row-info">
+                    <p class="key gray-bold">Overall Grade</p>
+                    <p class="value bold grade-custome-style">
+                        @if (@Model.GPA != null)
+                        {
+                            var gpaValue = Model.GPA;
+                            if (gpaValue >= 3.8)
+                            {
+                                <span style="color:green;">A+</span>
+                            }
+                            else if (gpaValue >= 3.5)
+                            {
+                                <span style="color:limegreen;">A</span>
+                            }
+                            else if (gpaValue >= 3.2)
+                            {
+                                <span style="color:darkcyan;">B+</span>
+                            }
+                            else if (gpaValue >= 3.0)
+                            {
+                                <span style="color:teal;">B</span>
+                            }
+                            else if (gpaValue >= 2.8)
+                            {
+                                <span style="color:orange;">C+</span>
+                            }
+                            else if (gpaValue >= 2.5)
+                            {
+                                <span style="color:gold;">C</span>
+                            }
+                            else if (gpaValue >= 2.0)
+                            {
+                                <span style="color:darkorange;">D+</span>
+                            }
+                            else if (gpaValue >= 1.5)
+                            {
+                                <span style="color:red;">D</span>
+                            }
+                            else
+                            {
+                                <span style="color:gray;">F</span>
+                            }
+                        }
+                        else
+                        {
+                            <span style="color:gray;">Invalid GPA</span>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div> <!--  information card -->
+
+
+    </div>
+
+</div> <!-- end student details page -->

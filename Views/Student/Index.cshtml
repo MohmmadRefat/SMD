@@ -1,0 +1,160 @@
+﻿@using SMD.Models.ModelsDTO;
+@model ICollection<StudentDTO>
+
+<div class="page render" id="students">
+    <div class="header">
+        <h2 class="page-title">
+            <i class="fa-solid fa-user"></i> Students
+        </h2>
+        <div class="actions">
+
+            <div class="search-box">
+                <i class="search-icon fa-solid fa-magnifying-glass"></i>
+                <input placeholder="Search students..." type="search" id="search-input">
+            </div>
+
+            <button data-page="addStudent" class="btn dash-btn blue">
+                <a style="text-decoration:none;
+color:#FFFFFF" asp-controller="Student" asp-action="Create" >
+                <i class="fa-solid fa-user-group"></i>
+                <span>Add Student</span>
+                </a>
+            </button>
+
+        </div>
+    </div>
+    <!-- tabel -->
+    <div class="tabel-container">
+        <table class="table-container">
+            <thead>
+                <tr>
+                    <th class="table-header" scope="col">
+                        ID
+                    </th>
+                    <th class="table-header" scope="col">
+                        Name
+                    </th>
+                    <th class="table-header" scope="col">
+                        Department
+                    </th>
+                    <th class="table-header" scope="col">
+                        GPA
+                    </th>
+                    <th class="table-header" scope="col">
+                        Grade
+                    </th>
+                    <th class="table-header table-header-right" scope="col">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="divided-rows">
+                @foreach(var student in Model)
+                {
+                    <tr class="row-hover">
+                        <td class="cell bold">@student.Id</td>
+                        <td class="cell">@student.FullName</td>
+                        <td class="cell">@student.Major</td>
+                        <td class="cell">@student.GPA</td>
+                        <td class="cell">
+                           @if (student.GPA != null)
+                           {
+                               var gpaValue = student.GPA;
+                               if (gpaValue >= 3.8)
+                               {
+                                   <span style="color:green;">A+</span>
+                               }
+                               else if (gpaValue >= 3.5)
+                               {
+                                   <span style="color:limegreen;">A</span>
+                               }
+                               else if (gpaValue >= 3.2)
+                               {
+                                   <span style="color:darkcyan;">B+</span>
+                               }
+                               else if (gpaValue >= 3.0)
+                               {
+                                   <span style="color:teal;">B</span>
+                               }
+                               else if (gpaValue >= 2.8)
+                               {
+                                   <span style="color:orange;">C+</span>
+                               }
+                               else if (gpaValue >= 2.5)
+                               {
+                                   <span style="color:gold;">C</span>
+                               }
+                               else if (gpaValue >= 2.0)
+                               {
+                                   <span style="color:darkorange;">D+</span>
+                               }
+                               else if (gpaValue >= 1.5)
+                               {
+                                   <span style="color:red;">D</span>
+                               }
+                               else
+                               {
+                                   <span style="color:gray;">F</span>
+                               }
+                           }
+                           else
+                           {
+                               <span style="color:gray;">Invalid GPA</span>
+                           }
+                        </td>
+                        <td class="cell right">
+                            <div class="button-group">
+                                <button onclick="handelViewButton(this)" class="btn btn-view">
+                                    <a asp-route-id="@student.Id" asp-controller="Student" asp-action="Details">
+                                    <i class="fa-regular fa-eye"></i>
+                                    View
+                                    </a>
+                                </button>
+                                <button data-edit="student" class="btn btn-edit">
+                                    <a style="text-decoration:none;color:#FFFFFF" asp-route-id="@student.Id" asp-controller="Student" asp-action="Edit">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    Edit
+                                    </a>
+                                </button>
+                                <button data-delete="student"
+                                        class="btn btn-delete"
+                                        data-delete-url="@Url.Action("Delete", "Student", new { id = student.Id })"
+                                        onclick="warningAlert(this)">
+                                    <i class="fa-regular fa-trash-can"></i> Delete
+                                </button>
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+                <!-- Additional rows would go here -->
+                <!-- I've included just one row as an example, but you would repeat this pattern for all rows -->
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+
+
+       function warningAlert(button) {
+        const deleteUrl = button.getAttribute("data-delete-url");
+
+        Swal.fire({
+            title: "Are you sure you want to delete this student?",
+            text: "This action cannot be undone.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete",
+            cancelButtonText: "Stay on this page"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = deleteUrl;
+            }
+        });
+    }
+
+</script>

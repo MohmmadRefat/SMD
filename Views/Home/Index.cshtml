@@ -1,0 +1,116 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@using SMD.Models.ModelsDTO;
+@model Dashboard
+
+<div class="page render" id="dashboard">
+    <!-- ===== Header Section ===== -->
+    <div class="header">
+        <h1 class="page-title">Dashboard</h1>
+        <div class="actions">
+            <button data-page="addStudent" class="btn dash-btn blue">
+                <a style="text-decoration:none;
+color:#FFFFFF" asp-controller="Student" asp-action="Create">
+                    <i class="fa-solid fa-user-group"></i>
+                    <span>Add Student</span>
+                </a>
+            </button>
+            <button data-page="addCourse" class="btn dash-btn green">
+                <i class="fa-solid fa-book"></i>
+                <span>Add Course</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== Summary Cards Section ===== -->
+    <div class="summary-cards">
+        <div class="card">
+            <div>
+                <p>Total Students</p>
+                <p>@Model.CountStudents</p>
+            </div>
+            <div class="icon">
+                <i class="fa-solid fa-user-group"></i>
+            </div>
+        </div>
+
+        <div class="card">
+            <div>
+                <p>Total Courses</p>
+                <p>@Model.CountCourses</p>
+            </div>
+            <div class="icon">
+                <i class="fa-solid fa-book"></i>
+            </div>
+        </div>
+
+        <div class="card">
+            <div>
+                <p>Departments</p>
+                <p>@Model.CountDepartments</p>
+            </div>
+            <div class="icon">
+                <i class="fa-solid fa-building"></i>
+            </div>
+        </div>
+
+        <div class="card">
+            <div>
+                <p>Average GPA</p>
+                <p>@Model.AvarageGPA <span class="gpa-state">
+                @if (@Model.AvarageGPA != null)
+                {
+                    var gpaValue = Model.AvarageGPA;
+                    if (gpaValue >= 3.8)
+                    {
+                        <span style="color:green; font-weight:bold;">A+</span>
+                    }
+                    else if (gpaValue >= 3.5)
+                    {
+                         <span style="color:limegreen; font-weight:bold;">A</span>
+                    }
+                    else if (gpaValue >= 3.2)
+                    {
+                         <span style="color:darkcyan; font-weight:bold;">B+</span>
+                    }
+                    else if (gpaValue >= 3.0)
+                    {
+                         <span style="color:teal; font-weight:bold;">B</span>
+                    }
+                    else if (gpaValue >= 2.8)
+                    {
+                         <span style="color:orange; font-weight:bold;">C+</span>
+                    }
+                    else if (gpaValue >= 2.5)
+                    {
+                         <span style="color:gold; font-weight:bold;">C</span>
+                    }
+                    else if (gpaValue >= 2.0)
+                    {
+                         <span style="color:darkorange; font-weight:bold;">D+</span>
+                    }
+                    else if (gpaValue >= 1.5)
+                    {
+                         <span style="color:red; font-weight:bold;">D</span>
+                    }
+                    else
+                    {
+                         <span style="color:gray; font-weight:bold;">F</span>
+                    }
+                }
+                else
+                {
+                         <span style="color:gray; font-weight:bold;">Invalid GPA</span>
+                }
+                    </span>
+                </p>
+            </div>
+            <div class="icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,189 @@
+﻿@using SMD.Models.ModelsDTO;  
+@model StudentUpdateDTO  
+<!--
+<form asp-action="Edit" method="post">  
+   <br />  
+   <div class="container border p-3" asp-for="Id">  
+       <h1 class="text-primary">Create Villa</h1>  
+       <hr />  
+
+       <div class="row">  
+           <div asp-validation-summary="ModelOnly" class="text-danger"></div>  
+
+           <div class="col-2">  
+               <label asp-for="FullName" class="control-label pt-2" style="font-size:20px"></label>  
+           </div>  
+           <div class="col-10 pb-3">  
+               <input asp-for="FullName" class="form-control" value="@Model.FullName" />  
+               <span asp-validation-for="FullName" class="text-danger"></span>  
+           </div>  
+
+           <div class="col-2">  
+               <label asp-for="Email" class="control-label pt-2" style="font-size:20px"></label>  
+           </div>  
+           <div class="col-10 pb-3">  
+               <input asp-for="Email" class="form-control" value="@Model.Email" />  
+               <span asp-validation-for="Email" class="text-danger"></span>  
+           </div>  
+
+           <div class="col-2">  
+               <label asp-for="AcademicYear" class="control-label pt-2" style="font-size:20px"></label>  
+           </div>  
+           <div class="col-10 pb-3">  
+               <input asp-for="AcademicYear" class="form-control" value="@Model.AcademicYear" />  
+               <span asp-validation-for="AcademicYear" class="text-danger"></span>  
+           </div>  
+
+           <div class="col-2">  
+               <label asp-for="Major" class="control-label pt-2" style="font-size:20px"></label>  
+           </div>  
+           <div class="col-10 pb-3">  
+               <input asp-for="Major" class="form-control" value="@Model.Major" />  
+               <span asp-validation-for="Major" class="text-danger"></span>  
+           </div>  
+
+           <div class="col-2">  
+               <label asp-for="GPA" class="control-label pt-2" style="font-size:20px"></label>  
+           </div>  
+           <div class="col-10 pb-3">  
+               <input asp-for="GPA" class="form-control" value="@Model.GPA" />  
+               <span asp-validation-for="GPA" class="text-danger"></span>  
+           </div>  
+
+           <div class="col-2">  
+               <label asp-for="TotalHours" class="control-label pt-2" style="font-size:20px"></label>  
+           </div>  
+           <div class="col-10 pb-3">  
+               <input asp-for="TotalHours" class="form-control" value="@Model.TotalHours" />  
+               <span asp-validation-for="TotalHours" class="text-danger"></span>  
+           </div>  
+
+           <div class="col-2">  
+               <label asp-for="EnrollmentYear" class="control-label pt-2" style="font-size:20px"></label>  
+           </div>  
+           <div class="col-10 pb-3">  
+               <input asp-for="EnrollmentYear" class="form-control" value="@Model.EnrollmentYear" />  
+               <span asp-validation-for="EnrollmentYear" class="text-danger"></span>  
+           </div>  
+
+           <div class="col-5 offset-2">  
+               <a asp-action="Index" asp-controller="Student" class="btn btn-primary form-control">Back To List</a>  
+           </div>  
+
+           <div class="col-5 offset-2 mt-2">  
+               <input type="submit" value="Update" class="btn btn-success form-control" />  
+           </div>  
+       </div>  
+   </div>  
+</form>  
+-->
+<div class="page render" id="addStudent">
+    <div class="page-center">
+        <h2 class="page-title"><i class="fa-solid fa-user-plus"></i>Update Student</h2>
+        <div class="form-container">
+            <form asp-controller="Student" asp-action="Edit" onsubmit="return successSave(event)">
+
+                <div class="form-row">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="FullName">Full Name</label>
+                        <input asp-for="FullName" required type="text" id="full-name" placeholder="Enter Your FullName">
+                        <span asp-validation-for="FullName" style="color:red" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AcademicYear" for="student-academic-year">Academic Year</label>
+                        <input asp-for="AcademicYear" required type="number" id="student-academic-year" placeholder="Enter student academic year">
+                        <span asp-validation-for="AcademicYear" style="color:red" style="color:red" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="TotalHours" for="student-credit-hours">Total Credit Hours</label>
+                        <input asp-for="TotalHours" required type="number" id="student-credit-hours" placeholder="Enter student credit hours">
+                        <span asp-validation-for="TotalHours" style="color:red" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" for="student-email">Email</label>
+                        <input asp-for="Email" required type="email" id="student-email" placeholder="Enter student email">
+                        <span asp-validation-for="Email" style="color:red" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="GPA" for="student-gpa">GPA</label>
+                        <input asp-for="GPA" required type="number" id="student-gpa" placeholder="Enter GPA" min="0" max="4" step="0.01">
+                        <span asp-validation-for="GPA" style="color:red" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EnrollmentYear">Enrollment Year</label>
+                        <select asp-for="EnrollmentYear" required id="enrollment-year">
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                        </select>
+                        <span asp-validation-for="EnrollmentYear"  style="color:red"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="Major" for="department">Department</label>
+                        <select asp-for="Major" id="department" required>
+                            <option>Computer Science</option>
+                            <option>Engineering</option>
+                            <option>Business</option>
+                            <option>Arts</option>
+                            <option>Medicine</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button data-cancel="student" type="button" class="btn btn-cancel">
+                        <i class="fa-solid fa-xmark"></i>
+                        Cancel
+                    </button>
+                    <button onclick="successSave()" type="submit" class="btn btn-submit">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Update 
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    
+        function successSave(event) {
+        event.preventDefault(); // Stop immediate submission
+
+        let timer;
+        Swal.fire({
+            title: "Saved",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: () => {
+                timer = setTimeout(() => {
+                    Swal.clickConfirm(); // Simulate clicking "OK" after 3 seconds
+                }, 1000);
+            },
+            willClose: () => {
+                clearTimeout(timer);
+            }
+        }).then(() => {
+            event.target.submit(); // Submit the form after confirmation
+        });
+
+        return false;
+    }
+</script>
+@section Scripts {  
+   <partial name="_ValidationScriptsPartial"></partial>  
+}

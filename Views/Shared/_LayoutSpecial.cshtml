@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <title>@ViewData["Title"] - SMD</title>
+    <script type="importmap"></script>
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+   @*  <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> *@
+
+   @*  <link rel="stylesheet" href="~/SMD.styles.css" asp-append-version="true" /> *@
+
+
+    <link rel="stylesheet" href="~/css/SMDCSS.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+
+        <div class="sidebar">
+            <h2>
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>Student MS</span>
+            </h2>
+            <ul>
+                <li data-page="dashboard" class="nav-link">
+                    <a asp-controller="Home" asp-action="Index">
+                   <i class="fa-solid fa-house"></i>
+                    <span>Dashboard</span>
+                </a>
+                </li>
+                <li data-page="students" class="nav-link">
+                <a asp-controller="Student" asp-action="Index">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Students</span>
+                </a>
+                </li>
+                <li data-page="courses" class="nav-link">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Courses</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-content" id="app">
+
+            @RenderBody()
+            <!-- 
+            <div class="page render" id="dashboard">
+                <div class="header">
+                    <h1 class="page-title">Dashboard</h1>
+                    <div class="actions">
+                        <button data-page="addStudent" class="btn dash-btn blue">
+                            <i class="fa-solid fa-user-group"></i>
+                            <span>Add Student</span>
+                        </button>
+                        <button data-page="addCourse" class="btn dash-btn green">
+                            <i class="fa-solid fa-book"></i>
+                            <span>Add Course</span>
+                        </button>
+                    </div>
+                </div>
+        
+
+                <div class="summary-cards">
+                    <div class="card">
+                        <div>
+                            <p>Total Students</p>
+                            <p>2</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa-solid fa-user-group"></i>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div>
+                            <p>Total Courses</p>
+                            <p>2</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa-solid fa-book"></i>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div>
+                            <p>Departments</p>
+                            <p>1</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa-solid fa-building"></i>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div>
+                            <p>Average GPA</p>
+                            <p>3.74 <span class="gpa-state">Good</span></p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="page" id="students">
+                <h1 class="page-title">Sudents</h1>
+            </div>
+
+            <div class="page" id="courses">
+                <h1 class="page-title">Courses</h1>
+            </div>
+
+            <div class="page" id="addStudent">
+                <div class="page-center">
+                    <h2 class="page-title"><i class="fa-solid fa-user-plus"></i> Add New Student</h2>
+                    <div class="form-container">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="student-id">Student ID</label>
+                                    <input type="text" id="student-id" placeholder="Enter student ID">
+                                </div>
+                                <div class="form-group">
+                                    <label for="full-name">Full Name</label>
+                                    <input type="text" id="full-name" placeholder="Enter student's full name">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="department">Department</label>
+                                    <select id="department">
+                                        <option>Computer Science</option>
+                                        <option>Engineering</option>
+                                        <option>Business</option>
+                                        <option>Arts</option>
+                                        <option>Medicine</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="enrollment-year">Enrollment Year</label>
+                                    <select id="enrollment-year">
+                                        <option>2025</option>
+                                        <option>2024</option>
+                                        <option>2023</option>
+                                        <option>2022</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-cancel">
+                                    <i class="fa-solid fa-xmark"></i>
+                                    Cancel
+                                </button>
+                                <button type="submit" class="btn btn-submit">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                    Add Student
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page" id="addCourse">
+                <div class="page-center">
+                    <h2 class="page-title"><i class="fa-solid fa-user-plus"></i> Add New Course</h2>
+                    <div class="form-container">
+
+                        <form id="courseForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="courseName">Course Name</label>
+                                    <input type="text" id="courseName" placeholder="e.g., Introduction to Computer Science" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="courseCode">Course Code</label>
+                                    <input type="text" id="courseCode" placeholder="e.g., CS101" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="academicYear">Academic Year</label>
+                                    <select id="academicYear">
+                                        <option>Year 1</option>
+                                        <option>Year 2</option>
+                                        <option>Year 3</option>
+                                        <option>Year 4</option>
+                                    </select>
+                                </div>
+                                <div style="flex: 1;" class="form-group">
+                                    <label for="creditHours">Credit Hours</label>
+                                    <input required type="number" id="creditHours" value="" placeholder="e.g. 3">
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-cancel">
+                                    <i class="fa-solid fa-xmark"></i>
+                                    Cancel
+                                </button>
+                                <button type="submit" class="btn btn-submit"><i class="fa-solid fa-floppy-disk"></i> Add Course</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        -->
+
+        </div>
+ 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+  
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
