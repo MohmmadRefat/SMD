@@ -15,6 +15,7 @@ namespace SMD
             builder.Services.AddDbContext<Context>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IRepository<Student>, StudentRepository>();
+            builder.Services.AddScoped<IRepository<Course>, CourseRepository>();
             var app = builder.Build();
 
 

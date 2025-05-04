@@ -1,0 +1,83 @@
+﻿@using SMD.Models.ModelsDTO
+@model IEnumerable<CourseDTO>
+
+<div class="page render" id="courses">
+    <div class="header">
+        <h2 class="page-title">
+            <i class="fa-solid fa-book"></i>
+            Courses
+        </h2>
+        <div class="actions">
+            <div class="search-box">
+                <i class="search-icon fa-solid fa-magnifying-glass"></i>
+                <input placeholder="Search courses..." type="search" id="search-input">
+            </div>
+            <a asp-controller="Course" asp-action="Create">
+            <button data-page="addCourse" class="btn dash-btn green">
+                <i class="fa-solid fa-book"></i>
+                <span>Add Course</span>
+            </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- tabel -->
+    <div class="tabel-container">
+        <table class="table-container">
+            <thead>
+                <tr>
+                    <th class="table-header" scope="col">
+                        Code
+                    </th>
+                    <th class="table-header" scope="col">
+                        Name
+                    </th>
+                    <th class="table-header" scope="col">
+                        Academic Year
+                    </th>
+                    <th class="table-header" scope="col">
+                        Credit Hours
+                    </th>
+
+                    <th class="table-header table-header-right" scope="col">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="divided-rows">
+                @foreach(var course in Model) {
+                    <tr class="row-hover">
+                        <td class="cell bold">@course.CourseCode</td>
+                        <td class="cell">@course.CourseName</td>
+                        <td class="cell">Year @course.AcademicYear</td>
+                        <td class="cell">@course.CreditHours hours</td>
+                        <td class="cell right">
+                            <div class="button-group">
+                                
+                                <button data-edit="course" class="btn btn-edit">
+                                    <a style="text-decoration:none;
+color:#FFFFFF" asp-route-id="@course.Id" asp-controller="Course" asp-action="Edit">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    Edit
+                                    </a>
+                                </button>
+
+                                <a style="text-decoration:none;
+color:#FFFFFF" asp-route-id="@course.Id" asp-controller="Course" asp-action="Delete">
+                                <button data-delete="course" class="btn btn-delete">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                    Delete
+                                </button>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <!-- Additional rows would go here -->
+                <!-- I've included just one row as an example, but you would repeat this pattern for all rows -->
+            </tbody>
+        </table>
+    </div>
+
+</div>
