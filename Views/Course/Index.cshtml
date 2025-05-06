@@ -63,13 +63,12 @@ color:#FFFFFF" asp-route-id="@course.Id" asp-controller="Course" asp-action="Edi
                                     </a>
                                 </button>
 
-                                <a style="text-decoration:none;
-color:#FFFFFF" asp-route-id="@course.Id" asp-controller="Course" asp-action="Delete">
-                                <button data-delete="course" class="btn btn-delete">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                    Delete
+                                <button data-delete="course"
+                                        class="btn btn-delete"
+                                        data-delete-url="@Url.Action("Delete", "Course", new { id = course.Id })"
+                                        onclick="warningAlert(this)">
+                                    <i class="fa-regular fa-trash-can"></i> Delete
                                 </button>
-                                </a>
                             </div>
                         </td>
                     </tr>
@@ -81,3 +80,27 @@ color:#FFFFFF" asp-route-id="@course.Id" asp-controller="Course" asp-action="Del
     </div>
 
 </div>
+
+<script>
+
+
+       function warningAlert(button) {
+        const deleteUrl = button.getAttribute("data-delete-url");
+
+        Swal.fire({
+            title: "Are you sure you want to delete this course?",
+            text: "This action cannot be undone.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete",
+            cancelButtonText: "Stay on this page"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = deleteUrl;
+            }
+        });
+    }
+
+</script>

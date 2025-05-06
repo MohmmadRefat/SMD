@@ -59,7 +59,7 @@ namespace SMD.Controllers
         // POST: CourseController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CourseCreateDTO courseCreateDTO)
+        public async Task<ActionResult> Create(CourseCreateDTO courseCreateDTO)
         {
             var Course= new Course
             {
@@ -68,7 +68,7 @@ namespace SMD.Controllers
                 AcademicYear = courseCreateDTO.AcademicYear,
                 CreditHours = courseCreateDTO.CreditHours,
             };
-            _courseRepository.AddAsync(Course);
+            await _courseRepository.AddAsync(Course);
             return RedirectToAction(nameof(Index));
         }
 
@@ -100,7 +100,7 @@ namespace SMD.Controllers
         // POST: CourseController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(CourseUpdateDTO _courseUpdateDto)
+        public async Task<ActionResult> Edit(CourseUpdateDTO _courseUpdateDto)
         {
             var Course = new Course
             {
@@ -111,7 +111,7 @@ namespace SMD.Controllers
                 CreditHours=_courseUpdateDto.CreditHours,
 
             };
-            _courseRepository.UpdateAsync(Course);
+            await _courseRepository.UpdateAsync(Course);
             return RedirectToAction(nameof(Index));
 
         }
@@ -119,7 +119,7 @@ namespace SMD.Controllers
         // GET: CourseController/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
-            var course = _courseRepository. GetByIdAsync(id);
+            var course = await _courseRepository.GetByIdAsync(id);
 
             if (course == null) return BadRequest();
 
