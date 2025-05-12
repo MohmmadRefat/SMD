@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Runtime.InteropServices;
+using System.Security.Cryptography.Xml;
+using Humanizer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using SMD.Models;
 using SMD.Models.ModelsDTO;
 using SMD.Repository;
@@ -7,9 +12,14 @@ namespace SMD.Controllers
 {
     public class StudentController : Controller
     {
-        private readonly IRepository<Student> _studentRepository;
-        public StudentController(IRepository<Student> repository) {
-            _studentRepository = repository;
+        private readonly StudentRepository _studentRepository;
+        private readonly CourseRepository _courseRepository;
+        private readonly StudentCourseRepository _studentCourseRepository;
+        
+        public StudentController(Context context) {
+            _studentRepository = new StudentRepository(context);
+            _courseRepository = new CourseRepository(context);
+            _studentCourseRepository = new StudentCourseRepository(context);
         }
 
         [HttpGet]
@@ -31,20 +41,87 @@ namespace SMD.Controllers
         public async Task<ActionResult> Details(int id)
         {
 
-            Student student = await _studentRepository.GetByIdAsync(id);
 
-            StudentDetailsDTO studentDetailsDTO = new StudentDetailsDTO
+            Student student = await _studentRepository.GetStudentWithStudnetCourseAsync(id);
+            
+
+            StudentDetailsDTO  studentDetailsDTO = new StudentDetailsDTO
+                {
+                    Id = id,
+                    FullName = student.FullName,
+                    Email = student.Email,
+                    AcademicYear = student.AcademicYear,
+                    Major = student.Major,
+                    GPA = student.GPA,
+                    TotalHours = student.TotalHours,
+                    EnrollmentYear = student.EnrollmentYear
+                };
+            
+
+            Course course = new Course();
+
+
+            List<StudentEnrollmentCourseDTO> listEnrollment = new List<StudentEnrollmentCourseDTO>();
+
+            bool bol = true;
+            if (student.Courses != null)
             {
-                Id=id,
-                FullName = student.FullName,
-                Email = student.Email,
-                AcademicYear = student.AcademicYear,
-                Major = student.Major,
-                GPA = student.GPA,
-                TotalHours = student.TotalHours,
-                EnrollmentYear = student.EnrollmentYear
-            };
-            return View(studentDetailsDTO);
+                foreach (var studentCourse2 in student.Courses)
+                {
+                    StudentCourse studentCourse = new StudentCourse();
+                    StudentEnrollmentCourseDTO studentEnrollmentCourseDTO = new StudentEnrollmentCourseDTO();
+                    studentCourse = await _studentCourseRepository.GetStudentCourse(studentCourse2.StudentId,studentCourse2.CourseId);
+
+                    if (studentCourse != null)
+                    {
+                        studentEnrollmentCourseDTO.StudentCourseId = studentCourse.Id;
+
+                        studentEnrollmentCourseDTO.Grade = ((double)studentCourse.Grade / 100.0) * 4;
+
+                        course = await _courseRepository.GetByIdAsync(studentCourse.CourseId);
+
+                        if (course == null) continue;
+
+                        if (course == null || course.CourseCode == null) bol = false;
+                        studentEnrollmentCourseDTO.CourseCode = course?.CourseCode;
+
+                        if (course.CreditHours == null) bol = false;
+                        studentEnrollmentCourseDTO.CreditHours = course.CreditHours;
+
+                        if (course.CourseName == null) bol = false;
+                        studentEnrollmentCourseDTO.CourseName = course?.CourseName;
+
+                        if (course.AcademicYear == null) bol = false;
+                        studentEnrollmentCourseDTO.AcademicYear = course.AcademicYear;
+
+
+                        listEnrollment.Add(studentEnrollmentCourseDTO);
+                    }
+                }
+            }
+
+
+            List<EnrollCourseDTO> enrollCourseDTOs = new List<EnrollCourseDTO>();
+            var courses = await _courseRepository.GetAllAsync();
+            
+            foreach(var cr in courses)
+            {
+            EnrollCourseDTO enrollCourseDTO = new EnrollCourseDTO();
+                enrollCourseDTO.CourseId = cr.Id;
+                enrollCourseDTO.CourseName = cr.CourseName;
+                enrollCourseDTO.CourseCode = cr.CourseCode;
+                
+                enrollCourseDTOs.Add(enrollCourseDTO);
+            }
+
+
+            TotalDetailsDTO totalDetailsDTO = new TotalDetailsDTO();
+            totalDetailsDTO.studentDetailsDTO = studentDetailsDTO;
+            totalDetailsDTO.studentenrollmentCourseDTOs = listEnrollment;
+            totalDetailsDTO.enrollCourseDTOs = enrollCourseDTOs;
+
+
+            return View(totalDetailsDTO);
         }
 
         //GET: StudentController/Create
@@ -134,6 +211,62 @@ namespace SMD.Controllers
         {
             await _studentRepository.DeleteAsync(id);
            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EnrollCourse(StudentCourseDTO studentCourseDTO)
+        {
+            if (studentCourseDTO == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            StudentCourse studentCourse = new StudentCourse();
+            studentCourse.StudentId = studentCourseDTO.StudentId;
+            studentCourse.CourseId = studentCourseDTO.CourseId;
+            studentCourse.Grade = (studentCourseDTO.Grade*100)/4;
+            studentCourse.Semester = studentCourseDTO.Semester;
+
+            var check=await _studentCourseRepository.GetStudentCourse(studentCourseDTO.StudentId, studentCourseDTO.CourseId);
+            if (check == null)
+            {
+                await _studentCourseRepository.AddAsync(studentCourse);
+            }
+
+            return RedirectToAction("Details", new { id = studentCourseDTO.StudentId });
+        }
+
+        public async Task<ActionResult> DeleteEnrollmentCourse(int id)
+        { 
+            var studentCourse = await _studentCourseRepository.GetByIdAsync(id);
+
+            
+            if (studentCourse != null)
+            {
+                await _studentCourseRepository.RemoveStudentCourseAsync(studentCourse.StudentId,studentCourse.CourseId);
+            }
+            
+            return RedirectToAction("Details", new { id = studentCourse.StudentId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> EditStudentEnrollmentCourse(StudentCourseDTO dto)
+        {
+            var enrollment = await _studentCourseRepository._dbSet
+                .FirstOrDefaultAsync(sc => sc.StudentId == dto.StudentId && sc.CourseId == dto.CourseId);
+
+            if (enrollment == null)
+            {
+                return NotFound();
+            }
+
+            enrollment.Grade = dto.Grade;
+            await _studentCourseRepository._context.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }

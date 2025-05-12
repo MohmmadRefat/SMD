@@ -25,7 +25,8 @@ namespace SMD.Models
             modelBuilder.Entity<PrerequisiteCourses>()
                  .HasOne(pc => pc.PrerequisiteCourse)
                  .WithMany(c => c.DependentCourses)
-                 .HasForeignKey(pc => pc.PrerequisiteCourseId);
+                 .HasForeignKey(pc => pc.PrerequisiteCourseId)
+                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Student>().HasData(
       new Student { Id = 1, FullName = "John Doe", Email = "john.doe@example.com", AcademicYear = 1, Major = "Computer Science", PhoneNumber = "1234567890", GPA = 3.5, Semester = 1, TotalHours = 15 },

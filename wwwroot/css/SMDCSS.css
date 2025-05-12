@@ -19,20 +19,11 @@
     --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.dark {
-    --main-light-bj: #1F2937;
-    /* داكن للخلفية */
-    --main-color: #60A5FA;
-    /* أزرق أفتح للعناصر */
-    --dark-text-color: #F9FAFB;
-    /* نص فاتح */
-    --gray-text-color: #9CA3AF;
-    /* رمادي فاتح */
-    --light-bjg-color: #111827;
-    /* خلفية داكنة للعناصر */
-
-    --shadow-default: 0 1px 3px rgba(255, 255, 255, 0.1), 0 1px 2px rgba(255, 255, 255, 0.06);
-    --shadow-light: 0 1px 3px rgba(255, 255, 255, 0.1);
+button {
+    outline: none;
+    border: none;
+    background: none;
+    cursor: pointer;
 }
 
 body {
@@ -61,15 +52,15 @@ body {
         gap: 10px;
         padding: 0 16px;
         color: var(--main-color);
-        font-weight: 600;
+        font-weight: 700;
         & span
 
 {
-    font-size: 21px;
+    font-size: 25px;
 }
 
 & i {
-    font-size: 22px;
+    font-size: 25px;
     color: var(--main-color);
 }
 
@@ -86,18 +77,21 @@ body {
     color: var(--gray-text-color);
     padding: 8px;
     margin-top: 4px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     border-radius: 0.375rem;
     & span
 
 {
     margin-left: 8px;
+    font-size: 15px;
+    color: var(--dark-text-color);
 }
 
 & i {
-    font-size: 14px;
+    font-size: 15px;
     color: var(--gray-text-color);
+    color: var(--dark-text-color);
 }
 
 }
@@ -156,7 +150,7 @@ body {
 }
 
 /* buttons */
-.actions .btn {
+.btn {
     margin-left: 10px;
     padding: 10px 15px;
     border: none;
@@ -222,10 +216,10 @@ body {
     }
 
     .card p:nth-child(2) {
-        font-size: 24px;
+        font-size: 33px;
         color: var(--dark-text-color);
-        font-weight: 700;
-        margin-top: 4px;
+        font-weight: 600;
+        margin-top: 2px;
     }
 
     .card .icon {
@@ -556,14 +550,20 @@ table .button-group .btn i {
     color: var(--gray-text-color);
 }
 
-/* studnet datils */
-
 .student-card {
     box-shadow: var(--shadow-default);
     background: #fff;
     border-radius: 0.5rem;
     width: 330px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.enrollment-courses-card.student-card {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-default);
+    margin-top: 60px;
 }
 
 .border-b {
@@ -587,7 +587,7 @@ table .button-group .btn i {
     height: 100%;
 }
 
-.student-info-cards .icon-title {
+.icon-title {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -675,3 +675,195 @@ table .button-group .btn i {
 .student-card {
     overflow-y: auto;
 }
+
+.btn.hide {
+    background-color: rebeccapurple;
+    display: none;
+}
+
+/* end studnet datils */
+
+/* Enroll new student */
+.enroll-course.form-container {
+    background: #ebf4ff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    max-width: 1000px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin: 20px auto;
+    display: none;
+}
+
+.enroll-course .form-title {
+    color: #1e40af;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.enroll-course .form-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+.enroll-course .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.enroll-course .span-2 {
+    grid-column: span 2;
+}
+
+.enroll-course .span-5 {
+    grid-column: span 5;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+.enroll-course label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.enroll-course select {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 1rem;
+    background: white;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+    .enroll-course select:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 2px #93c5fd;
+        outline: none;
+    }
+
+.enroll-course .btn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.enroll-course .cancel {
+    background: white;
+    color: #374151;
+    border-color: #d1d5db;
+}
+
+    .enroll-course .cancel:hover {
+        background: #f3f4f6;
+    }
+
+.enroll-course .enroll {
+    background: #1e40af;
+    color: white;
+}
+
+/* Enroll new student */
+
+/* Add statistics in dashboard*/
+
+.statistics {
+    margin-top: 60px;
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+    .statistics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.statistics .card {
+    flex-direction: column;
+    justify-content: start;
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.statistics .card-header {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    font-weight: bold;
+}
+
+.statistics .icon-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.statistics .icon {
+    width: 20px;
+    height: 20px;
+    stroke: #1e40af;
+    fill: none;
+    stroke-width: 2;
+}
+
+.statistics .card-body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    width: 100%;
+    padding: 1.5rem;
+}
+
+.statistics .progress-group {
+    margin-bottom: 1.5rem;
+}
+
+.statistics .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4b5563;
+    margin-bottom: 0.25rem;
+}
+
+.statistics .progress-bar {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.statistics .progress {
+    height: 100%;
+    background-color: #2563eb;
+    border-radius: 9999px;
+}
+
+.c-green {
+    color: #16a34a;
+}
+
+.c-blue {
+    color: #2563eb;
+}
+
+.c-yellow {
+    color: #eab308;
+}
+
+.c-red {
+    color: #cb2323;
+}
+/* Add statistics in dashboard*/
