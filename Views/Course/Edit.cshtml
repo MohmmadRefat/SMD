@@ -4,44 +4,91 @@
 <div class="page render" id="addCourse">  
    <div class="page-center">  
        <h2 class="page-title"><i class="fa-solid fa-user-plus"></i> Update Course</h2>  
-       <div class="form-container">  
+       <div class="form-container">
 
-           <form id="courseForm" asp-controller="Course" asp-action="Edit" method="post">  
-               <div class="form-row">  
+            <form id="courseForm" asp-controller="Course" asp-action="Edit"  onsubmit="return successSave(event)">
+                <div class="form-row">
+                    <div asp-validation-summary="ModelOnly"></div>
 
-                   <div class="form-group">  
-                       <label asp-for="CourseName" for="courseName">Course Name</label>  
-                       <input asp-for="CourseName" required type="text" id="courseName" placeholder="e.g., Introduction to Computer Science">  
-                       <span asp-validation-for="CourseName" style="color:red" class="text-danger"></span>  
+                    <div class="form-group">  
+                       <label asp-for="CourseName" for="courseName">Course Name</label>
+                        <input asp-for="CourseName" required minlength="3" type="text" id="courseName" placeholder="e.g., Introduction to Computer Science">
+                        <span asp-validation-for="CourseName" style="color:red" class="text-danger"></span>  
                    </div>  
-                   <div class="form-group">  
-                       <label asp-for="CourseCode" for="courseCode">Course Code</label>  
-                       <input asp-for="CourseCode" type="text" id="courseCode" placeholder="e.g., CS101" required>  
-                       <span asp-validation-for="CourseCode" style="color:red" class="text-danger"></span>  
+                   <div class="form-group">
+                        <label asp-for="CourseCode" for="courseCode">Course Code</label>
+                        <input asp-for="CourseCode" required minlength="3" type="text" id="courseCode" placeholder="e.g., CS101">
+                        <span asp-validation-for="CourseCode" style="color:red" class="text-danger"></span>  
                    </div>  
                </div>  
 
                <div class="form-row">  
-                   <div class="form-group">  
-                       <label asp-for="AcademicYear" for="academicYear">Academic Year</label>  
-                       <input asp-for="AcademicYear" type="text" id="academicYear" placeholder="e.g., 2023-2024" required>  
+                   <div class="form-group">
+                        <label asp-for="AcademicYear"   for="academicYear">Academic Year</label>
+                        <input asp-for="AcademicYear" required  min="1" max="4" type="number" id="academicYear" placeholder="e.g., 1:4" >  
                        <span asp-validation-for="AcademicYear" style="color:red" class="text-danger"></span>  
                    </div>  
                    <div style="flex: 1;" class="form-group">  
-                       <label asp-for="CreditHours" for="creditHours">Credit Hours</label>  
-                       <input asp-for="CreditHours" required type="number" id="creditHours" placeholder="e.g. 3">  
-                       <span asp-validation-for="CreditHours" style="color:red" class="text-danger"></span>  
+                       <label asp-for="CreditHours" for="creditHours">Credit Hours</label>
+                        <input asp-for="CreditHours" required min="0" max="6" type="number" id="creditHours" placeholder="e.g. 3">
+                        <span asp-validation-for="CreditHours" style="color:red" class="text-danger"></span>  
                    </div>  
                </div>  
 
                <div class="form-actions">  
                    <button class="btn btn-cancel" onclick="history.back()">  
                        <i class="fa-solid fa-xmark"></i> Cancel  
+
+
                    </button>  
                    <button type="submit" class="btn btn-submit"><i class="fa-solid fa-floppy-disk"></i> Update Course</button>  
+
+
                </div>  
            </form>  
 
        </div>  
    </div>  
 </div>
+
+<script>
+
+        function successSave(event) {
+        event.preventDefault(); // Stop immediate submission
+
+                const form = event.target
+
+        if (form.checkValidity() === false ) {
+                return false;
+            }
+
+
+        // if true , complete
+
+        let timer;
+        Swal.fire({
+            title: "Saved",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: () => {
+                timer = setTimeout(() => {
+                    Swal.clickConfirm(); // Simulate clicking "OK" after 3 seconds
+                }, 1000);
+            },
+            willClose: () => {
+                clearTimeout(timer);
+            }
+        }).then((res) => {
+                event.target.submit(); // Submit the form after confirmation
+        });
+
+        return false;
+    }
+</script>
+
+ @section Scripts 
+                        { 
+     <partial name="_ValidationScriptsPartial"></partial> 
+ } 

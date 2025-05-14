@@ -9,7 +9,7 @@
     <div class="page-center">
         <h2 class="page-title"><i class="fa-solid fa-user-plus"></i> Add New Student</h2>
         <div class="form-container">
-            <form asp-controller="Student" asp-action="Create">
+            <form asp-controller="Student" asp-action="Create" onsubmit="return successSave(event)">
                 <div class="form-row">
                     <div class="form-group">
                         <label asp-for="FullName">Full Name</label>
@@ -77,6 +77,38 @@
     </div>
 </div>
 
+<script>
+    function successSave(event) {
+        event.preventDefault(); // Stop immediate submission
+
+                const form = event.target
+        if (form.checkValidity() === false ) {
+                return false;
+            }
+        // if true , complete
+
+        let timer;
+        Swal.fire({
+            title: "Saved",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: () => {
+                timer = setTimeout(() => {
+                    Swal.clickConfirm(); // Simulate clicking "OK" after 3 seconds
+                }, 1000);
+            },
+            willClose: () => {
+                clearTimeout(timer);
+            }
+        }).then((res) => {
+                event.target.submit(); // Submit the form after confirmation
+        });
+
+        return false;
+    }
+</script>
 
  @section Scripts {  
     <partial name="_ValidationScriptsPartial"></partial>   

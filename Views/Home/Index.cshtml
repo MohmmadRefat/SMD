@@ -116,4 +116,214 @@ color:#FFFFFF" asp-controller="Course" asp-action="Create">
         </div>
     </div>
 
+
+
+    <!--Some Statistics-->
+
+    <!-- todo: add some statistics  -->
+    <div class="dashboard statistics">
+        <div class="card">
+            <div class="card-header">
+                <div class="icon-title">
+                    <!-- Icon: chart-column -->
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span>Students Distribution by Year</span>
+                </div>
+            </div>
+
+            <div>
+                <canvas id="pieChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+
+        <!-- Department Distribution -->
+        <div class="card">
+            <div class="card-header">
+                <div class="icon-title">
+                    <!-- Icon: Building -->
+                    <i class="fa-regular fa-building"></i>
+                    <span>Department Distribution</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Each Department -->
+                <div class="progress-group">
+                    <div class="progress-label">
+                        <span>Computer Scinse (CS)</span><span>300 students (40.0%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 40%"></div>
+                    </div>
+                </div>
+
+                <div class="progress-group">
+                    <div class="progress-label">
+                        <span>Information Technology (IT) </span><span>612 students (80.0%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 80%"></div>
+                    </div>
+                </div>
+
+                <div class="progress-group">
+                    <div class="progress-label">
+                        <span>Computer Science</span><span>11 students (22.0%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 22%"></div>
+                    </div>
+                </div>
+
+                <div class="progress-group">
+                    <div class="progress-label">
+                        <span>Business</span><span>7 students (14.0%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 14%"></div>
+                    </div>
+                </div>
+
+                <div class="progress-group">
+                    <div class="progress-label">
+                        <span>Engineering</span><span>13 students (26.0%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 26%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Performance Distribution -->
+        <div class="card">
+            <div class="card-header">
+                <div class="icon-title">
+                    <!-- Icon: user check -->
+                    <i class="fa-solid fa-user-check"></i>
+                    <span>Student Performance Distribution</span>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <!-- Each Department -->
+                <div class="progress-group">
+                    <div class="progress-label">
+                        <span class="gray-bold">Excellent (GPA ≥ 3.7)</span><span class="c-green">2 students</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 10%; background-color: #16a34a;"></div>
+                    </div>
+                </div>
+
+                <div class="progress-group">
+                    <div class="progress-label">
+                        <span class="gray-bold">Good (3.0 ≤ GPA < 3.7)</span><span class="c-blue">14 students</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 24%; background-color: #2563eb;"></div>
+                    </div>
+                </div>
+
+                <div class="progress-group">
+                    <div class="progress-label">
+                        <span class="gray-bold">Average (2.0 ≤ GPA < 3.0) </span><span class="c-yellow">42 students</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 60%; background-color: #eab308;"></div>
+                    </div>
+                </div>
+
+                <div class="progress-group">
+                    <div class="progress-label">
+                        <span class="gray-bold">Struggling (GPA < 2.0)</span><span class="c-red">7 students</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 14%; background-color: #cb2323;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Distribution by Year -->
+        <div class="card">
+            <div class="card-header">
+                <div class="icon-title">
+                    <!-- Icon: chart-column -->
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span>Course Distribution by Year</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Each Department -->
+                <div class="progress-group">
+                    <div class="progress-label">
+                        <span>Year 1</span><span>7 course (14.0%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 80%; background-color: #14b8a6;"></div>
+                    </div>
+                </div>
+
+                <div class="progress-group">
+                    <div class="progress-label">
+                        <span>Year 1</span><span>40 students (36.0%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 36%;; background-color: #3b82f6;"></div>
+                    </div>
+                </div>
+
+                <div class="progress-group">
+                    <div class="progress-label">
+                        <span>Year 3</span><span>80 students (95.0%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 95%; background-color: #f59e0b;"></div>
+                    </div>
+                </div>
+
+                <div class="progress-group">
+                    <div class="progress-label">
+                        <span>Year 4</span><span>65 students (77.0%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 77%; background-color: #8b5cf6;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function pieChart() {
+    var pieCtx = document.getElementById('pieChart').getContext('2d');
+    // Create a new pie chart instance
+    var pieChart = new Chart(pieCtx, {
+    type: 'pie', // doughnut chart type
+    data: {
+    labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4'], // Labels for categories
+    datasets: [{
+    label: 'No. of Students',
+    data: [5, 1, 2, 3], // Data for the categories
+    backgroundColor: ['#14b8a6', '#f59e0b', '#3b82f6', '#8b5cf6'], // Slice colors
+    }]
+    },
+    options: {
+    responsive: true,
+    plugins: {
+    legend: {
+    position: 'top',
+    },
+    tooltip: {
+    enabled: true
+    }
+    }
+    }
+    });
+    } pieChart();
+</script>

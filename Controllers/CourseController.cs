@@ -61,6 +61,14 @@ namespace SMD.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CourseCreateDTO courseCreateDTO)
         {
+            if (courseCreateDTO == null)
+            {
+                return BadRequest("Student cannot be null");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var Course= new Course
             {
                 CourseCode = courseCreateDTO.CourseCode,
@@ -102,6 +110,14 @@ namespace SMD.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(CourseUpdateDTO _courseUpdateDto)
         {
+            if (_courseUpdateDto == null)
+            {
+                return BadRequest("Course cannot be null");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var Course = new Course
             {
                 Id = _courseUpdateDto.Id,
@@ -126,6 +142,7 @@ namespace SMD.Controllers
             await _courseRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
+
 
         
     }

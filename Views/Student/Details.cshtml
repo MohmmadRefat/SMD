@@ -1,6 +1,480 @@
 ﻿@using SMD.Models.ModelsDTO;
-@model StudentDetailsDTO 
+@model TotalDetailsDTO
+
 <div class="page render" id="studentDetails">
+    <div class="header">
+        <h2 class="page-title">
+            <i class="fa-solid fa-user"></i> Student Details
+        </h2>
+        <div class="actions">
+
+            <button data-page="addStudent" class="btn dash-btn green">
+                <i class="fa-solid fa-user-group"></i>
+                <span>Edit Student</span>
+            </button>
+
+            <!-- todo Enroll new course for some student button-->
+            <button data-type="enroll" class="btn blue enroll-course-btn" onclick="handelEnrollCourseButton(this)">
+                <i class="fa-solid fa-plus"></i>
+                <span>Enroll in Course</span>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="student-info-cards" style="height: 450px">
+        <div class="student-card" style="height:100%; width:400px">
+            <div class="card-header border-b">
+                <div class="icon-title">
+                    <i class="fa-solid fa-user"></i>
+                    Student Information
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row-info">
+                    <p class="key gray-bold">ID</p>
+                    <p class="value">@Model.studentDetailsDTO.Id</p>
+                </div>
+
+                <div class="row-info">
+                    <p class="key gray-bold">Name</p>
+                    <p class="value">@Model.studentDetailsDTO.FullName</p>
+                </div>
+
+                <div class="row-info">
+                    <span>
+                        <i class="fa-solid fa-building"></i>
+                        <p class="key gray-bold">Department</p>
+                    </span>
+                    <p class="value">@Model.studentDetailsDTO.Major</p>
+                </div>
+                <div class="row-info">
+                    <span>
+                        <i class="fa-regular fa-hourglass"></i>
+                        <p class="key gray-bold">Total Credit Hours</p>
+                    </span>
+                    <p class="value">@Model.studentDetailsDTO.TotalHours hours</p>
+                </div>
+                <div class="row-info border-b" style="padding-bottom: 15px;">
+                    <span>
+                        <i class="fa-regular fa-calendar"></i>
+                        <p class="key gray-bold">Enrollment Year</p>
+                    </span>
+                    <p class="value">@Model.studentDetailsDTO.AcademicYear</p>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row-info">
+                    <span>
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <p class="key gray-bold">Cumulative GPA</p>
+                    </span>
+                    <p class="value bold">@Model.studentDetailsDTO.GPA</p>
+                </div>
+                <div class="row-info">
+                    <p class="key gray-bold">Overall Grade</p>
+                    <p class="value bold grade-custome-style">Very Good</p>
+                </div>
+            </div>
+        </div> <!--  information card -->
+
+        <div style="flex: 1;overflow: auto; scrollbar-width: none; -ms-overflow-style: none;" class="student-card">
+            <div class="card-header border-b">
+                <div class="icon-title">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    Yearly GPA Progress
+                </div>
+            </div>
+            <canvas id="student-gpa-progress"></canvas>
+        </div>
+    </div>
+
+    <!-- todo -->
+    <!-- tabel -->
+    <div class="enrollment-courses-card student-card">
+        <div class="card-header border-b">
+            <div class="icon-title">
+                <i class="fa-solid fa-book"></i>
+                Enrollment Courses
+            </div>
+        </div>
+
+        <!-- todo: add a new course for the current student -->
+        <!-- Start Enroll in a New Course -->
+        <div class="form-container enroll-course" id="enrollHero">
+            <h3 class="form-title">Enroll in a New Course</h3>
+            <form class="form-grid" asp-controller="Student" asp-action="EnrollCourse"  method="post">
+                <input type="hidden" name="StudentId" value="@Model.studentDetailsDTO.Id"/>
+                <div class="form-group span-2">
+                    <label for="select-course">Select Course</label>
+                    <select id="select-course" name="CourseId">
+                        @foreach (var course2 in Model.enrollCourseDTOs)
+                        {
+                            <option value="@course2.CourseId">@course2.CourseCode - @course2.CourseName</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="select-grade">Grade</label>
+                    <select id="select-grade" name="grade">
+                        <option value="4.0">A</option>
+                        <option value="3.7">A-</option>
+                        <option value="3.3">B+</option>
+                        <option value="3.0">B</option>
+                        <option value="2.7">B-</option>
+                        <option value="2.3">C+</option>
+                        <option value="2.0">C</option>
+                        <option value="1.7">C-</option>
+                        <option value="1.3">D+</option>
+                        <option value="1.0">D</option>
+                        <option value="0.0">F</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="select-semester">Semester</label>
+                    <select id="select-semester" name="semester">
+                        <option value="Fall">Fall</option>
+                        <option value="Spring">Spring</option>
+                        <option value="Summer">Summer</option>
+                    </select>
+                </div>
+
+                <div class="form-actions span-5">
+                    <button type="button" class="btn cancel" onclick="closeEnrollHero()">Cancel</button>
+                    <button type="submit" class="btn enroll">Enroll</button>
+                </div>
+
+            </form>
+        </div>
+        <!-- End Enroll in a New Course -->
+
+        <div class="tabel-container">
+            <table class="table-container">
+                <thead>
+                    <tr>
+                        <th class="table-header" scope="col">
+                            Code
+                        </th>
+                        <th class="table-header" scope="col">
+                            Name
+                        </th>
+                        <th class="table-header" scope="col">
+                            Academic Year
+                        </th>
+                        <th class="table-header" scope="col">
+                            Credit Hours
+                        </th>
+                        <th class="table-header" scope="col">
+                            Grade
+                        </th>
+                        <th class="table-header table-header-right" scope="col">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody class="divided-rows">
+                    @foreach (var course in Model.studentenrollmentCourseDTOs)
+                    {
+                    <tr class="row-hover">
+                            <td class="cell bold">@course.CourseCode</td>
+                            <td class="cell">@course.CourseName  </td>
+                            <td class="cell">Year @course.AcademicYear</td>
+                            <td class="cell">@course.CreditHours hours</td>
+                            <td class="cell gray-cell grade-course">
+                                @if (course?.Grade !=null  )
+                                {
+                                    var gpaValue = course.Grade;
+                                    if (gpaValue >= 3.8)
+                                    {
+                                        <span style="background:#2ecc71; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">A+</span>
+                                    }
+                                    else if (gpaValue >= 3.5)
+                                    {
+                                        <span style="background:#27ae60; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">A</span>
+                                    }
+                                    else if (gpaValue >= 3.3)
+                                    {
+                                        <span style="background:#58d68d; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">A-</span>
+                                    }
+                                    else if (gpaValue >= 3.2)
+                                    {
+                                        <span style="background:#f1c40f; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">B+</span>
+                                    }
+                                    else if (gpaValue >= 3.0)
+                                    {
+                                        <span style="background:#f4d03f; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">B</span>
+                                    }
+                                    else if (gpaValue >= 2.8)
+                                    {
+                                        <span style="background:#f39c12; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">B</span>
+                                    }
+                                    else if (gpaValue >= 2.6)
+                                    {
+                                        <span style="background:#e67e22; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">C+</span>
+                                    }
+                                    else if (gpaValue >= 2.5)
+                                    {
+                                        <span style="background:#d35400; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">C</span>
+                                    }
+                                    else if (gpaValue >= 1.5)
+                                    {
+                                        <span style="background:#e74c3c; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">D</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="background:#80808061; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">F</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span style="background:gray; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">Invalid GPA</span>
+                                }
+                            </td>
+                        <td class="cell right">
+                            <div class="button-group">
+                                <button data-delete="course"
+                                        class="btn btn-delete delete-student-course"
+                                        data-delete-url="@Url.Action("DeleteEnrollmentCourse", "Student", new { id = course?.StudentCourseId })"
+                                        onclick="handelDeleteStudentCourse(this)">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                    Delete
+                                </button>
+
+                                <button class="btn btn-edit edit-student-grade">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    Edit
+                                </button>
+
+                                    @* <button class="btn btn-edit blue hide save-student-grade"> *@
+                                    @*     <i class="fa-solid fa-pen-to-square"></i> *@
+                                    @*     Save *@
+                                    @* </button> *@
+
+                                    <form class=" hide " asp-controller="Student" asp-action="EditStudentEnrollmentCourse" method="post">
+                                        
+                                        <input type="hidden" name="Grade" value="@course.Grade" />
+
+                                        <button type="submit" class="btn btn-edit blue save-student-grade">
+                                            <i class="fa-solid fa-pen-to-square"></i> Save
+                                        </button>
+                                    </form>
+
+                                <button class="btn btn-view hide cancel-student-grade">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                    Cancel
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                    <!-- Additional rows would go here -->
+                    <!-- I've included just one row as an example, but you would repeat this pattern for all rows -->
+                </tbody>
+            </table>
+        </div>
+    
+    </div>
+</div> <!-- end student details page -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    // todo: add course details page
+    // update student grade in student details page
+    function updateStudentGrade() {
+
+       function clickToEdit(editBtn, saveBtn, cancelBtn, deleteBtn) {
+          editBtn.classList.add("hide");
+          deleteBtn.classList.add("hide");
+          cancelBtn.classList.remove("hide");
+          saveBtn.classList.remove("hide");
+       }
+
+       function clickToDelete() {
+          warningAlert();
+       }
+
+       function clickToSave(editBtn, saveBtn, cancelBtn, deleteBtn) {
+          editBtn.classList.remove("hide");
+          deleteBtn.classList.remove("hide");
+          cancelBtn.classList.add("hide");
+          saveBtn.classList.add("hide");
+       }
+
+       function clickToCancel(editBtn, saveBtn, cancelBtn, deleteBtn) {
+          editBtn.classList.remove("hide");
+          deleteBtn.classList.remove("hide");
+          cancelBtn.classList.add("hide");
+          saveBtn.classList.add("hide");
+       }
+
+       const editBtns = document.querySelectorAll(".edit-student-grade");
+       editBtns.forEach(editBtn => {
+          editBtn.addEventListener('click', _ => {
+             const deleteBtn = editBtn.previousElementSibling;
+             const savelBtn = editBtn.nextElementSibling;
+             const cancelBtn = editBtn.nextElementSibling.nextElementSibling;
+
+             clickToEdit(editBtn, savelBtn, cancelBtn, deleteBtn);
+             console.log(deleteBtn)
+             makeGradeEditable(editBtn);
+
+             cancelBtn.addEventListener('click', _ => {
+                clickToSave(editBtn, savelBtn, cancelBtn, deleteBtn);
+             });
+
+             savelBtn.addEventListener('click', _ => {
+                clickToCancel(editBtn, savelBtn, cancelBtn, deleteBtn);
+             });
+          });
+       });
+
+    } updateStudentGrade();
+
+    function handelDeleteStudentCourse(button) {
+       warningAlert(button);
+    }
+
+    function warningAlert(button) {
+        const deleteUrl = button.getAttribute("data-delete-url");
+
+        Swal.fire({
+            title: "Are you sure you want to delete this student course?",
+            text: "This action cannot be undone.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete",
+            cancelButtonText: "Stay on this page"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = deleteUrl;
+            }
+        });
+    }
+
+    function makeGradeEditable(button) {
+
+       const td = button.closest('tr'); // Get the parent <tr>
+       const gradeCell = td.querySelector('.grade-course'); // Find the grade cell
+
+       const currentGrade = gradeCell.textContent.trim();
+       console.log(currentGrade);
+
+       const grades = ["A+", "A", "B+", "B", "C+", "C", "D", "F"];
+
+       // Check if already editable (has select)
+       if (td.querySelector("select")) return;
+
+       const select = document.createElement("select");
+       grades.forEach(grade => {
+          const option = document.createElement("option");
+          option.value = grade;
+          option.textContent = grade;
+          if (grade === currentGrade) {
+             option.selected = true;
+          }
+          select.appendChild(option);
+       });
+
+       gradeCell.textContent = ""; // clear current grade
+       // console.log(select);
+       gradeCell.appendChild(select); // Append the select to the cell
+
+
+       // when i click on the save button it will save the selected value
+       const savelBtn = button.nextElementSibling;
+       savelBtn.addEventListener('click', _ => {
+          gradeCell.textContent = select.value; // Update the cell with the selected value
+       });
+
+       const cancelBtn = button.nextElementSibling.nextElementSibling;
+       cancelBtn.addEventListener('click', _ => {
+          gradeCell.textContent = currentGrade; // Update the cell with the selected value
+       });
+    }
+
+    function handelEnrollCourseButton(btn) {
+       const enrollHero = document.getElementById("enrollHero");
+       if (btn.dataset.type === "enroll") {
+          enrollHero.style.display = "block";
+          btn.dataset.type = "un-enroll";
+          // change the button text to "Un-enroll"
+          btn.innerHTML = '<i class="fa-solid fa-ban"></i> <span>Cancel</span>';
+       }
+       else {
+          enrollHero.style.display = "none";
+          btn.dataset.type = "enroll";
+          btn.innerHTML = '<i class="fa-solid fa-plus"></i> <span>Enroll in Course</span>';
+       }
+    }
+
+    function closeEnrollHero() {
+       const enrollHero = document.getElementById("enrollHero");
+       const enrollBtn = document.querySelector(".enroll-course-btn");
+       enrollHero.dataset.type = "enroll";
+       handelEnrollCourseButton(enrollBtn);
+    }
+        function studentProgressChart() {
+       const ctx = document.getElementById('student-gpa-progress').getContext('2d');
+
+       new Chart(ctx, {
+          type: 'line',
+          data: {
+             labels: ['semester 1', 'semester 2', 'semester 3', 'semester 4', 'semester 5', 'semester 6', 'semester 7', 'semester 8'],
+             datasets: [
+                {
+                   label: "Ahmed's GPA",
+                   data: [2.8, 3.0, 3.3, 3.5, null, null, null, null],
+                   borderColor: 'rgba(0, 0, 255, 0.34)',
+                   backgroundColor: 'rgba(0, 0, 255, 0.77)',
+                   tension: 0.3,
+                   fill: false
+                }
+             ]
+          },
+          options: {
+             responsive: true,
+             plugins: {
+                title: {
+                   display: false,
+                   text: 'Yearly GPA Progress per Student'
+                },
+                legend: {
+                   display: false, // Set to false to hide the legend
+                }
+             },
+             scales: {
+                y: {
+                   beginAtZero: false,
+                   min: 0,
+                   max: 4,
+                   title: {
+                      display: true,
+                      text: 'GPA'
+                   }
+                },
+                x: {
+                   title: {
+                      display: true,
+                      text: 'Academic semesters'
+                   }
+                }
+             }
+          }
+       });
+    } studentProgressChart();
+</script>
+
+
+@* <div class="page render" id="studentDetails">
     <div class="header">
         <h2 class="page-title">
             <i class="fa-solid fa-user"></i> Student Details
@@ -117,3 +591,4 @@
     </div>
 
 </div> <!-- end student details page -->
+ *@

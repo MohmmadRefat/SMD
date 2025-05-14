@@ -16,8 +16,8 @@
             <button data-page="addStudent" class="btn dash-btn blue">
                 <a style="text-decoration:none;
 color:#FFFFFF" asp-controller="Student" asp-action="Create" >
-                <i class="fa-solid fa-user-group"></i>
-                <span>Add Student</span>
+                    <i class="fa-solid fa-user-group"></i>
+                    <span>Add Student</span>
                 </a>
             </button>
 
@@ -58,49 +58,53 @@ color:#FFFFFF" asp-controller="Student" asp-action="Create" >
                         <td class="cell">@student.Major</td>
                         <td class="cell">@student.GPA</td>
                         <td class="cell">
-                           @if (student.GPA != null)
-                           {
-                               var gpaValue = student.GPA;
-                               if (gpaValue >= 3.8)
-                               {
-                                   <span style="color:green;">A+</span>
-                               }
-                               else if (gpaValue >= 3.5)
-                               {
-                                   <span style="color:limegreen;">A</span>
-                               }
-                               else if (gpaValue >= 3.2)
-                               {
-                                   <span style="color:darkcyan;">B+</span>
-                               }
-                               else if (gpaValue >= 3.0)
-                               {
-                                   <span style="color:teal;">B</span>
-                               }
-                               else if (gpaValue >= 2.8)
-                               {
-                                   <span style="color:orange;">C+</span>
-                               }
-                               else if (gpaValue >= 2.5)
-                               {
-                                   <span style="color:gold;">C</span>
-                               }
-                               else if (gpaValue >= 2.0)
-                               {
-                                   <span style="color:darkorange;">D+</span>
-                               }
-                               else if (gpaValue >= 1.5)
-                               {
-                                   <span style="color:red;">D</span>
-                               }
-                               else
-                               {
-                                   <span style="color:gray;">F</span>
-                               }
-                           }
+                            @if (student.GPA != null)
+                            {
+                                var gpaValue = student.GPA;
+                                if (gpaValue >= 3.8)
+                                {
+                                    <span style="background:#2ecc71; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">A+</span>
+                                }
+                                else if (gpaValue >= 3.5)
+                                {
+                                    <span style="background:#27ae60; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">A</span>
+                                }
+                                else if (gpaValue >= 3.3)
+                                {
+                                    <span style="background:#58d68d; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">A-</span>
+                                }
+                                else if (gpaValue >= 3.2)
+                                {
+                                    <span style="background:#f1c40f; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">B+</span>
+                                }
+                                else if (gpaValue >= 3.0)
+                                {
+                                    <span style="background:#f4d03f; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">B</span>
+                                }
+                                else if (gpaValue >= 2.8)
+                                {
+                                    <span style="background:#f39c12; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">B</span>
+                                }
+                                else if (gpaValue >= 2.6)
+                                {
+                                    <span style="background:#e67e22; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">C+</span>
+                                }
+                                else if (gpaValue >= 2.5)
+                                {
+                                    <span style="background:#d35400; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">C</span>
+                                }
+                                else if (gpaValue >= 1.5)
+                                {
+                                    <span style="background:#e74c3c; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">D</span>
+                                }
+                                else
+                                {
+                                    <span style="background:#80808061; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">F</span>
+                                }
+                            }
                            else
                            {
-                               <span style="color:gray;">Invalid GPA</span>
+                                <span style="background:gray; padding:5px; border-radius:50%; display:flex;justify-content:center; align-items:center; width:28px; height:28px">Invalid GPA</span>
                            }
                         </td>
                         <td class="cell right">
@@ -137,6 +141,7 @@ color:#FFFFFF" asp-controller="Student" asp-action="Create" >
 </div>
 <script>
 
+    
 
        function warningAlert(button) {
         const deleteUrl = button.getAttribute("data-delete-url");
